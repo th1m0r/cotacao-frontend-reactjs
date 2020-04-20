@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit'
-import rootReducer from './redux'
+import { BrowserRouter } from 'react-router-dom'
 
-import Login from './pages/Login';
-import App from './App';
+import './layout/bootstrap';
 
-const store = configureStore({
-  reducer: rootReducer
-})
+import AuthOrApp from './authOrApp';
+import store from './store'
+
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <Login />
+      <BrowserRouter>
+        <AuthOrApp />
+      </BrowserRouter>
     </React.StrictMode>
   </Provider>,
   document.getElementById('root')

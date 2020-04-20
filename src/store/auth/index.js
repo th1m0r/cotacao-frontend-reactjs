@@ -2,24 +2,27 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const userKey = "@aratu-Token";
 
-const loginSlice = createSlice({
-    name: 'login',
+const authSlice = createSlice({
+    name: 'auth',
     initialState: {
         user: JSON.parse(localStorage.getItem(userKey)),
         valid: false
     },
     reducers: {
         doLogin(state, action) {
-            localStorage.setItem(userKey, JSON.stringify(action.payload))
             state.user = action.payload
             state.valid = true
         },
-        doLogout(state, action) {
+        doLogout(state) {
             localStorage.removeItem(userKey);
             state.user = null;
             state.valid = false;
+        },
+        validate(state, action) {
+            console.log(action.payload);
+            state.valid=true;
         }
     }
 });
-export const { doLogin, doLogout } = loginSlice.actions;
-export default loginSlice.reducer;
+export const { doLogin, doLogout, validate } = authSlice.actions;
+export default authSlice.reducer;

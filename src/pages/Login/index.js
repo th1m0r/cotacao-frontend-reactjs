@@ -1,47 +1,60 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { authLogin } from '../../store/fetchActions'
 
-import api from '../../services/api';
-import { doLogin } from '../../redux/loginSlice';
+import logo from '../../assets/aratu.png'
 
-// import { Container } from './styles';
 
-const mapDispatch = { doLogin };
-const Login = ({ doLogin }) => {
-    const [usuario, setUsuario] = useState({ nome: '', senha: '' });
+const Login = () => {
+    const [usuario, setUsuario] = useState({ username: '', password: '' });
+
+    const dispatch = useDispatch();
 
     const handleSubmit = async event => {
         event.preventDefault();
-        try {
-            const response = await api.post('/login', usuario);
-            doLogin(response.data);
-            setUsuario({ nome: '', senha: '' });
-        } catch (err) {
-            console.log(err);
-        }
+        dispatch(authLogin(usuario));
+        setUsuario({ username: '', password: '' })
     }
 
     return (
-        <form method="post" onSubmit={handleSubmit}>
-            <div>
-                <label>Usuário</label>
-                <input type="text"
-                    value={usuario.nome}
-                    onChange={e => setUsuario({ ...usuario, nome: e.target.value })}
-                    placeholder="Digite o usuário"
-                    autoComplete="off"
-                    autoFocus />
-            </div>
-            <div>
-                <label>Senha</label>
-                <input type="password"
-                    value={usuario.senha}
-                    onChange={e => setUsuario({ ...usuario, senha: e.target.value })}
-                    placeholder="Digite a senha"
-                    autoComplete="off" />
-            </div>
-            <button type="submit">ENTRAR</button>
-        </form>
+        <div style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: 320,
+            margin: '40px auto',
+            marginTop: "50vh",
+            padding: "20px 30px",
+            transform: "translateY(-50%)",
+        }}>
+            <img alt="AratuAPP" src={logo} style={{ width: 200 }} />
+            <form method="post"
+                onSubmit={handleSubmit} >
+                <h2 className="text-center mt-4 mb-2" style={{
+                    margin: "0 0 30px",
+                    fontSize: "1em"
+                }}>Login do sistema</h2>
+                <div className="form-group">
+                    <input type="text"
+                        className="form-control"
+                        value={usuario.username}
+                        onChange={e => setUsuario({ ...usuario, username: e.target.value })}
+                        placeholder="Digite o usuário"
+                        autoComplete="off"
+                        autoFocus />
+                </div>
+                <div>
+                    <input type="password"
+                        className="form-control"
+                        value={usuario.password}
+                        onChange={e => setUsuario({ ...usuario, password: e.target.value })}
+                        placeholder="Digite a senha"
+                        autoComplete="off" />
+                </div>
+                <button type="submit" className="btn btn-primary btn-block mt-3">ENTRAR</button>
+            </form >
+        </div>
     );
 };
-export default connect(null, mapDispatch)(Login);
+export default Login;
