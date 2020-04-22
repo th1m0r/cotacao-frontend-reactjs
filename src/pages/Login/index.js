@@ -22,15 +22,16 @@ const Login = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            width: 320,
+            width: 400,
             margin: '40px auto',
             marginTop: "50vh",
             padding: "20px 30px",
             transform: "translateY(-50%)",
         }}>
-            <img alt="AratuAPP" src={logo} style={{ width: 200 }} />
+            <img alt="AratuAPP" src={logo} style={{ width: 280 }} />
             <form method="post"
-                onSubmit={handleSubmit} >
+                onSubmit={handleSubmit} 
+                style={{width: "100%"}}>
                 <h2 className="text-center mt-4 mb-2" style={{
                     margin: "0 0 30px",
                     fontSize: "1em"

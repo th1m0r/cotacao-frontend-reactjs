@@ -1,16 +1,23 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
-import CotacaoItens from '../CotacaoItens'
+import api from '../../services/api';
+import CotacaoItens from '../CotacaoItens';
 
+const Cotacao = ({ cotacao }) => {
+    const [cotacaoItens, setCotacaoItens] = useState([]);
+    useEffect(() => {
+        async function loadItens() {
+            const response = api.get(`/cotacoes/${cotacao}/itens`);
+            setCotacaoItens(response.data);
+        }
+        loadItens();
+    }, [cotacao]);
 
-const Cotacao = () => {
-    const { cotacao } = useSelector(state => state.cotacao);
-    console.log('passando na cotacao')
+    console.log('passando pela lista da cotacao')
 
     return (
         <>
-            {!!cotacao &&
+            {!!cotacaoItens &&
                 <div className="table-responsive mt-3">
                     <table className="table table-striped">
                         <thead>
@@ -25,7 +32,7 @@ const Cotacao = () => {
                         </thead>
                         <tbody>
                             {
-                                cotacao.itens.map(item => (
+                                cotacaoItens.itens.map(item => (
                                     <CotacaoItens key={item.id} item={item} />
                                 ))
                             }
@@ -34,7 +41,6 @@ const Cotacao = () => {
                 </div>
             }
         </>
-
     );
 }
 

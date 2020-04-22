@@ -14,7 +14,7 @@ const AuthOrApp = ({ children }) => {
         if (user) {
             dispatch(validate(user.token));
         }
-    }, []);
+    }, [dispatch, user]);
 
     return (
         <>

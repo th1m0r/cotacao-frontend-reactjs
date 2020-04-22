@@ -19,7 +19,6 @@ const authSlice = createSlice({
             state.valid = false;
         },
         validate(state, action) {
-            console.log(action.payload);
             state.valid=true;
         }
     }
