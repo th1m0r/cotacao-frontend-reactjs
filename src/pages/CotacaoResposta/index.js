@@ -21,19 +21,21 @@ const CotacaoResposta = ({ match, history }) => {
         var resultado = [];
         cotacaoItens.map(item => {
             item.resultado.idfornecedor = user.fornecedor.id;
-            if (!item.resultado.idvendedor && !item.resultado.precoCotado) {
-                item.resultado.idvendedor =  user.id;
+            if (!item.resultado.idvendedor && item.resultado.precoCotado>0) {
+                item.resultado.idvendedor = user.id;
             }
-			
             item.resultado.prazoEntrega = 0;
             item.resultado.prazoPagamento = 0;
             resultado.push(item.resultado);
         });
         try {
             const response = await api.post(`/cotacoes/${match.params.id_cotacao}/resposta`, resultado);
-            console.log(response.data);
-            dispatch(doLogout);
-            history.push('/login');
+            if (response.status === 201) {
+                dispatch(doLogout());
+                history.push('/login');
+            } else {
+                console.log(response.data);
+            }
         } catch (err) {
             console.log(err);
         }

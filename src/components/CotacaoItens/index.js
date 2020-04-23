@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CotacaoItens = ({ item }) => {
+    const [preco, setPreco] = useState('0.00');
+    useEffect(() => {
+        !!item.resultado.idvendedor ? setPreco(item.resultado.precoCotado) : setPreco('0.00');
+    }, [item]);
 
-    const handlePrecoChange = (item, event) => {
-        item.resultado.precoCotado = event.target.value;
+    const handlePrecoChange = item => {
+        item.resultado.precoCotado = Number.parseFloat(preco.replace(',', '.')).toFixed(2);
     }
+
 
     return (
         <tr className={!!item.resultado.idvendedor ? "table-success" : ""}>
@@ -17,8 +22,9 @@ const CotacaoItens = ({ item }) => {
                 <input
                     type="text"
                     name="preco"
-                    value={item.resultado.precoCotado}
-                    onChange={e => handlePrecoChange(item, e)}
+                    value={preco}
+                    onBlur={() => handlePrecoChange(item)}
+                    onChange={e => setPreco(e.target.value)}
                     placeholder="Preço"
                     disabled={!!item.resultado.idvendedor} />
             </td>
