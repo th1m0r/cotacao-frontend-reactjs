@@ -19,15 +19,15 @@ const CotacaoResposta = ({ match, history }) => {
 
     const handleFinalizar = async () => {
         var resultado = [];
-        cotacaoItens.map(item => resultado.push({
-            CotacaoId: Number.parseInt(match.params.id_cotacao),
-            FornecedorId: user.fornecedor.id,
-            VendedorId: item.precoCotado !== 0 ? user.id : 0,
-            ProdutoId: item.produto.id,
-            precoCotado: item.precoCotado || 0,
-            prazoEntrega: 0,
-            prazoPagamento: 0
-        }));
+        cotacaoItens.map(item => {
+            item.resultado.idfornecedor = user.fornecedor.id;
+            if (!item.resultado.idvendedor) {
+                item.resultado.vendedor = item.resultado.precoCotado !== 0 ? user.id : 0;
+            }
+            item.resultado.prazoEntrega = 0;
+            item.resultado.prazoPagamento = 0;
+            resultado.push(item.resultado);
+        });
         try {
             const response = await api.post(`/cotacoes/{match.params.id_cotacao/resposta`, resultado);
             console.log(response.data);
