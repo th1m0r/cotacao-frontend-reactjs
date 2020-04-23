@@ -7,7 +7,7 @@ const CotacaoItens = ({ item }) => {
     }
 
     return (
-        <tr className={item.resultado.idvendedor!== null ? "table-success" : ""}>
+        <tr className={!!item.resultado.idvendedor ? "table-success" : ""}>
             <td>{item.produto.ean}</td>
             <td>{item.produto.descricao}</td>
             <td>{item.unidade}</td>
@@ -20,7 +20,7 @@ const CotacaoItens = ({ item }) => {
                     value={item.resultado.precoCotado}
                     onChange={e => handlePrecoChange(item, e)}
                     placeholder="Preço"
-                    disabled={item.resultado.precoCotado > 0} />
+                    disabled={!!item.resultado.idvendedor} />
             </td>
         </tr>
     );
