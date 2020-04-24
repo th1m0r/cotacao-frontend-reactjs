@@ -32,7 +32,6 @@ const CotacaoResposta = ({ match, history }) => {
             const response = await api.post(`/cotacoes/${match.params.id_cotacao}/resposta`, resultado);
             if (response.status === 201) {
                 dispatch(doLogout());
-                history.push('/login');
             } else {
                 console.log(response.data);
             }

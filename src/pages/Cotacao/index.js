@@ -19,7 +19,7 @@ function Cotacao({ history }) {
     }, [user.id]);
 
     return (
-        <>
+        <div className="table-responsive">
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -44,8 +44,8 @@ function Cotacao({ history }) {
                     }
                     {cotacoes.lengh === 0 && <tr><td colSpan="4">Nenhuma cotação em aberto</td></tr>}
                 </tbody>
-            </table>
-        </>
+            </table>    
+        </div>
     );
 }
 
