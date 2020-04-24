@@ -10,7 +10,6 @@ const CotacaoItens = ({ item }) => {
         item.resultado.precoCotado = Number.parseFloat(preco.replace(',', '.')).toFixed(2);
     }
 
-
     return (
         <tr className={!!item.resultado.idvendedor ? "table-success" : ""}>
             <td>{item.produto.ean}</td>

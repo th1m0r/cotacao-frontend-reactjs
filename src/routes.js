@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
+import { BrowserRouter } from 'react-router-dom'
 
 import Login from './pages/Login';
 import Header from './layout/Header';
@@ -11,9 +12,9 @@ export default function Routes() {
 
     return (
         <>
-            <Header />
-            <main role="main" className="flex-shrink-0">
-                <div className="container-fluid">
+            <BrowserRouter>
+                <Header />
+                <div className="content-wrapper">
                     <Switch>
                         <Route path='/login' component={Login} />
                         <Route path="/cotacao/:id_cotacao/responder" component={CotacaoResposta} />
@@ -21,8 +22,8 @@ export default function Routes() {
                         <Redirect from='*' to='/' />
                     </Switch>
                 </div>
-            </main>
-            <Footer />
+                <Footer />
+            </BrowserRouter>
         </>
     )
 }   

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
+import ContentHeader from '../../layout/ContentHeader'
+import Content from '../../layout/Content'
 
 function Cotacao({ history }) {
     const { user } = useSelector(state => state.auth.user);
@@ -19,33 +21,38 @@ function Cotacao({ history }) {
     }, [user.id]);
 
     return (
-        <div className="table-responsive">
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Data Inicial</th>
-                        <th>Data Final</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        cotacoes.map(cotacao => (
-                            <tr key={cotacao.id}>
-                                <td>{cotacao.descricao}</td>
-                                <td>{cotacao.dataInicial}</td>
-                                <td>{cotacao.dataFinal}</td>
-                                <td>
-                                    <Link to={`/cotacao/${cotacao.id}/responder`}>Responder</Link>
-                                </td>
+        <>
+            <ContentHeader title="Listagem de cotações" small="" />
+            <Content>
+                <div className="table-responsive">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Data Inicial</th>
+                                <th>Data Final</th>
+                                <th>Ação</th>
                             </tr>
-                        ))
-                    }
-                    {cotacoes.lengh === 0 && <tr><td colSpan="4">Nenhuma cotação em aberto</td></tr>}
-                </tbody>
-            </table>    
-        </div>
+                        </thead>
+                        <tbody>
+                            {
+                                cotacoes.map(cotacao => (
+                                    <tr key={cotacao.id}>
+                                        <td>{cotacao.descricao}</td>
+                                        <td>{cotacao.dataInicial}</td>
+                                        <td>{cotacao.dataFinal}</td>
+                                        <td>
+                                            <Link to={`/cotacao/${cotacao.id}/responder`}>Responder</Link>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                            {cotacoes.lengh === 0 && <tr><td colSpan="4">Nenhuma cotação em aberto</td></tr>}
+                        </tbody>
+                    </table>
+                </div>
+            </Content>
+        </>
     );
 }
 
