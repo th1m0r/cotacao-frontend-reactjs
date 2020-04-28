@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import Routes from './routes'
-import Login from './pages/Login'
 import { validate } from './store/auth';
 
+
+import Routes from './routes'
+import Login from './pages/Login'
+import Mensagem from './components/Mensagem';
 
 const AuthOrApp = ({ children }) => {
 
@@ -18,6 +20,7 @@ const AuthOrApp = ({ children }) => {
 
     return (
         <>
+            <Mensagem />
             {user && valid &&
                 <Routes>{children}</Routes>
             }

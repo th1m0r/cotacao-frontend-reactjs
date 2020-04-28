@@ -1,8 +1,8 @@
+import './layout/dependencies';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import './layout/bootstrap';
 
 import AuthOrApp from './authOrApp';
 import store from './store'

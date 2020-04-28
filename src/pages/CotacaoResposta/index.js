@@ -5,8 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { doLogout } from '../../store/auth'
 import ContentHeader from '../../layout/ContentHeader';
 import Content from '../../layout/Content';
+import { toastr } from 'react-redux-toastr'
 
-const CotacaoResposta = ({ match, history }) => {
+const CotacaoResposta = ({ match }) => {
     const [cotacaoItens, setCotacaoItens] = useState([]);
     const { user } = useSelector(state => (state.auth.user));
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const CotacaoResposta = ({ match, history }) => {
 
     const handleFinalizar = async () => {
         var resultado = [];
-        cotacaoItens.map(item => {
+        cotacaoItens.forEach(item => {
             item.resultado.idfornecedor = user.fornecedor.id;
             if (!item.resultado.idvendedor && item.resultado.precoCotado > 0) {
                 item.resultado.idvendedor = user.id;
@@ -33,12 +34,14 @@ const CotacaoResposta = ({ match, history }) => {
         try {
             const response = await api.post(`/cotacoes/${match.params.id_cotacao}/resposta`, resultado);
             if (response.status === 201) {
+                toastr.success("Sucesso", "Contação responsida com sucesso!");
                 dispatch(doLogout());
             } else {
                 console.log(response.data);
+                toastr.error("Erro", response.data);
             }
         } catch (err) {
-            console.log(err);
+            toastr.error("Erro", err.response.data);
         }
     }
 

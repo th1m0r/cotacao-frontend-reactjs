@@ -5,10 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { doLogout } from '../../store/auth';
 import { FaSignOutAlt } from "react-icons/fa";
 
-import './styles.css';
 import logo from '../../assets/tm.png'
 
-export default function Header({ history }) {
+export default function Header() {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 

@@ -1,6 +1,7 @@
 import api from '../../services/api';
 import { doLogin } from '../auth';
 import { loadCotacao } from '../cotacao';
+import { toastr } from 'react-redux-toastr'
 
 const userKey = "@aratu-Token";
 
@@ -13,7 +14,7 @@ export const authLogin = user => {
                 dispatch(doLogin());
                 window.location.pathname = '/';
             })
-            .catch(console.log);
+            .catch(err => toastr.error('Erro', 'Erro de rede'));
     }
 }
 

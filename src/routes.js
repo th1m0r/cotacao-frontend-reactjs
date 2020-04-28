@@ -6,7 +6,8 @@ import Login from './pages/Login';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 import Cotacao from './pages/Cotacao';
-import CotacaoResposta from './pages/CotacaoResposta'
+import CotacaoResposta from './pages/CotacaoResposta';
+import Mensagem from './components/Mensagem';
 
 export default function Routes() {
 
@@ -14,6 +15,7 @@ export default function Routes() {
         <>
             <BrowserRouter>
                 <Header />
+                <Mensagem />
                 <div className="content-wrapper">
                     <Switch>
                         <Route path='/login' component={Login} />

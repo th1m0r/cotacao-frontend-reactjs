@@ -5,7 +5,6 @@ import { authLogin } from '../../store/fetchActions'
 import logo from '../../assets/aratu.png'
 import tmautomacao from '../../assets/logo-tmautomacao.png'
 import tm from '../../assets/tm.png'
-
 import Footer from '../../layout/Footer';
 
 const Login = () => {
@@ -25,10 +24,10 @@ const Login = () => {
         <>
             <nav className="main-header navbar navbar-expand-md navbar-light navbar-dark">
                 <div className="navbar-brand mt-1">
-                    <img alt="TM Automação" src={tmautomacao} className="brand-image" />                    
+                    <img alt="TM Automação" src={tmautomacao} className="brand-image" />
                 </div>
                 <div className="navbar-brand mt-1 ml-auto">
-                    <img alt="TM Automação" src={tm} className="brand-image" />                    
+                    <img alt="TM Automação" src={tm} className="brand-image" />
                 </div>
             </nav>
             <div className="content-wrapper">
