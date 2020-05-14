@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 import ContentHeader from '../../layout/ContentHeader'
 import Content from '../../layout/Content'
 
-function Cotacao({ history }) {
-    const { user } = useSelector(state => state.auth.user);
+function Cotacao() {
     const [cotacoes, setCotacoes] = useState([]);
 
     useEffect(() => {
@@ -15,10 +13,8 @@ function Cotacao({ history }) {
             const response = await api.get('/cotacoes');
             setCotacoes(response.data);
         }
-        if (user.id) {
-            loadCotacoes();
-        }
-    }, [user.id]);
+        loadCotacoes();
+    }, []);
 
     return (
         <>
@@ -47,7 +43,7 @@ function Cotacao({ history }) {
                                     </tr>
                                 ))
                             }
-                            {cotacoes.lengh === 0 && <tr><td colSpan="4">Nenhuma cotação em aberto</td></tr>}
+                            {cotacoes && <tr><td colSpan="4">Nenhuma cotação em aberto</td></tr>}
                         </tbody>
                     </table>
                 </div>

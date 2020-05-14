@@ -1,9 +1,18 @@
 import api from '../../services/api';
-import { doLogin } from '../auth';
-import { loadCotacao } from '../cotacao';
+import { doLogin, doValidate } from '../auth';
 import { toastr } from 'react-redux-toastr'
 
 const userKey = "@aratu-Token";
+
+export const validateToken = token => {
+    return dispatch =>
+        api
+            .post('/validar', { token })
+            .then(resp => {
+                dispatch(doValidate(resp.data.valido))
+            })
+            .catch(err => toastr.error('Erro', err.response.data.message))
+}
 
 export const authLogin = user => {
     return dispatch => {
@@ -14,17 +23,13 @@ export const authLogin = user => {
                 dispatch(doLogin());
                 window.location.pathname = '/';
             })
-            .catch(err => toastr.error('Erro', 'Erro de rede'));
-    }
-}
-
-export const getCotacao = () => {
-    return dispatch => {
-        api
-            .get('/cotacoes/55')
-            .then(resp => {
-                dispatch(loadCotacao(resp.data))
-            })
-            .catch(console.log);
+            .catch(err => {
+                if (err.response.data) {
+                    toastr.error('Erro', err.response.data.message);
+                }
+                else {
+                    toastr.error('Erro', 'Sem conexão com o servidor');
+                }
+            });
     }
 }

@@ -18,10 +18,16 @@ const authSlice = createSlice({
             state.user = null;
             state.valid = false;
         },
-        validate(state, action) {
-            state.valid=true;
+        doValidate(state, action) {
+            if (action.payload) {
+                state.valid = true;
+            } else {
+                localStorage.removeItem(userKey);
+                state.user = null;
+                state.valid = false;
+            }
         }
     }
 });
-export const { doLogin, doLogout, validate } = authSlice.actions;
+export const { doLogin, doLogout, doValidate } = authSlice.actions;
 export default authSlice.reducer;
