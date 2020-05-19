@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const CotacaoItens = ({ item }) => {
     const [preco, setPreco] = useState('0.00');
     useEffect(() => {
-        !!item.resultado.idvendedor ? setPreco(item.resultado.precoCotado) : setPreco('0.00');
+        item.resultado.idvendedor !== "0" ? setPreco(item.resultado.precoCotado) : setPreco('0.00');
     }, [item]);
 
     const handlePrecoChange = item => {
@@ -11,7 +11,7 @@ const CotacaoItens = ({ item }) => {
     }
 
     return (
-        <tr className={!!item.resultado.idvendedor ? "table-success" : ""}>
+        <tr className={item.resultado.idvendedor !== "0" ? "table-success" : ""}>
             <td>{item.produto.ean}</td>
             <td>{item.produto.descricao}</td>
             <td>{item.unidade}</td>
@@ -25,7 +25,7 @@ const CotacaoItens = ({ item }) => {
                     onBlur={() => handlePrecoChange(item)}
                     onChange={e => setPreco(e.target.value)}
                     placeholder="Preço"
-                    disabled={!!item.resultado.idvendedor} />
+                    disabled={item.resultado.idvendedor !== "0"} />
             </td>
         </tr>
     );
