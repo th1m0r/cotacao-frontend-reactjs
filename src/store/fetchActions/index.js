@@ -11,7 +11,7 @@ export const validateToken = token => {
             .then(resp => {
                 dispatch(doValidate(resp.data.valido))
             })
-            .catch(err => toastr.error('Erro', err.response.data.message))
+            .catch(err => toastr.error('Erro', err.response.data.error))
 }
 
 export const authLogin = user => {
@@ -24,11 +24,14 @@ export const authLogin = user => {
                 window.location.pathname = '/';
             })
             .catch(err => {
-                if (err.response.data) {
+                if(err.message ==="Network Error") {
+                    toastr.error('Erro', "Erro ao consultar a API. Servidor off-line!");
+                }
+                else if (err.response.data) {
                     toastr.error('Erro', err.response.data.message);
                 }
                 else {
-                    toastr.error('Erro', 'Sem conexão com o servidor');
+                    toastr.error('Erro', "Erro desconhecido notificar suporte.");
                 }
             });
     }

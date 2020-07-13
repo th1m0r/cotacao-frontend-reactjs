@@ -9,7 +9,7 @@ export default function footer() {
             <strong>Copyright &copy; 2020 <a href="fake_url">TM Automação</a>.</strong> Todos os direitos reservados.
             <div className="float-right d-none d-sm-inline">
                 <img alt="AratuAPP" src={aratu} className="mr-2" width="36" />
-                <b>Version</b> 1.0.0
+                <b>Version</b> 1.2.0
             </div>
         </footer>
     )

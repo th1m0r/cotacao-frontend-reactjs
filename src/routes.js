@@ -19,8 +19,8 @@ export default function Routes() {
                 <div className="content-wrapper">
                     <Switch>
                         <Route path='/login' component={Login} />
-                        <Route path="/cotacao/:id_cotacao/responder" component={CotacaoResposta} />
-                        <Route path='/' component={Cotacao} exact />
+                        <Route path="/" component={CotacaoResposta} exact />
+                        <Route path='/cotacoes' component={Cotacao} exact />
                         <Redirect from='*' to='/' />
                     </Switch>
                 </div>

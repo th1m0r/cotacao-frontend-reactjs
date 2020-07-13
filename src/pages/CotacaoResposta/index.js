@@ -7,42 +7,90 @@ import ContentHeader from '../../layout/ContentHeader';
 import Content from '../../layout/Content';
 import { toastr } from 'react-redux-toastr'
 
-const CotacaoResposta = ({ match }) => {
+const CotacaoResposta = () => {
     const [cotacaoItens, setCotacaoItens] = useState([]);
     const { user } = useSelector(state => (state.auth.user));
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function loadItens() {
-            const response = await api.get(`/cotacoes/${match.params.id_cotacao}/itens/fornecedor/${user.fornecedor.id}`);
-            setCotacaoItens(response.data);
+            try {
+                const response = await api.get(`/cotacoes/itens?id_fornecedor=${user.fornecedor.id}`);
+                setCotacaoItens(response.data);
+            } catch (e) {
+                toastr.error('Erro', 'Erro ao carregar produtos.')
+            }
         }
         loadItens();
-    }, [match.params.id_cotacao, user.fornecedor.id]);
+        return setCotacaoItens([]);
+    }, [user.fornecedor.id]);
 
     const handleFinalizar = async () => {
-        var resultado = [];
-        cotacaoItens.forEach(item => {
-            item.resultado.idfornecedor = user.fornecedor.id;
-            if (!item.resultado.idvendedor && item.resultado.precoCotado > 0) {
-                item.resultado.idvendedor = user.id;
-            }
-            item.resultado.prazoEntrega = 0;
-            item.resultado.prazoPagamento = 0;
-            resultado.push(item.resultado);
-        });
-        try {
-            const response = await api.post(`/cotacoes/${match.params.id_cotacao}/resposta`, resultado);
-            if (response.status === 201) {
-                toastr.success("Sucesso", "Contação responsida com sucesso!");
-                dispatch(doLogout());
-            } else {
-                console.log(response.data);
-                toastr.error("Erro", response.data);
-            }
-        } catch (err) {
-            toastr.error("Erro", err.response.data);
-        }
+        const resultado = await processarResultado();
+        toastr.info('Aguarde... salvando respostas')
+        setTimeout(() => {
+            api.post(`/cotacoes/resposta`, resultado)
+                .then(response => {
+                    if (response.status === 201) {
+                        toastr.success("Sucesso", "Cotação respondida com sucesso!");
+                        dispatch(doLogout());
+                    } else {
+                        toastr.error("Erro", response.data);
+                    }
+                }).catch(err => {
+                    toastr.error("Erro", err.response.data);
+                })
+        }, 4000);
+    }
+
+    const processarResultado = async () => {
+        let resultado = [];
+        api.get('/cotacoes')
+            .then(res => {
+                const cotacoes = res.data
+                cotacoes.forEach(cotacao => {
+                    api.get(`/cotacoes/${cotacao.id}/resposta?id_fornecedor=${user.fornecedor.id}`)
+                        .then(res => {
+                            const respostas = res.data;
+                            if (respostas.length > 0) {
+                                respostas.forEach(resposta => {
+                                    cotacaoItens.forEach(itemResposta => {
+                                        if (resposta.idproduto === itemResposta.idproduto) {
+                                            if (Number.parseFloat(itemResposta.precoCotado) > 0
+                                                && Number.parseFloat(itemResposta.idvendedor) === 0) {
+                                                resposta.idvendedor = user.id
+                                                resposta.precoCotado = itemResposta.precoCotado
+                                            }
+                                            resultado.push(resposta);
+                                        }
+                                    })
+                                })
+                            } else {
+                                api.get(`/cotacoes/${cotacao.id}/itens`)
+                                    .then(res => {
+                                        const itens = res.data;
+                                        itens.forEach(item => {
+                                            cotacaoItens.forEach(resposta => {
+                                                if (resposta.idproduto === item.idproduto) {
+                                                    resultado.push({
+                                                        idcotacao: item.idcotacao,
+                                                        idfornecedor: user.fornecedor.id,
+                                                        idvendedor: Number.parseFloat(resposta.precoCotado) > 0 ? user.id : 0,
+                                                        idproduto: resposta.idproduto,
+                                                        precoCotado: resposta.precoCotado,
+                                                        prazoPagamento: resposta.prazoPagamento,
+                                                        prazoEntrega: resposta.prazoEntrega
+                                                    })
+                                                }
+                                            })
+                                        })
+                                    }).catch(err => console.log('deu erro carregando itens', err))
+                            }
+                        }).catch(err => console.log('deu erro carregando as respostas', err))
+                })
+            })
+            .catch(err => console.log(err))
+        return resultado;
     }
 
     return (

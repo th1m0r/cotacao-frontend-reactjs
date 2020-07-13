@@ -43,7 +43,7 @@ function Cotacao() {
                                     </tr>
                                 ))
                             }
-                            {cotacoes && <tr><td colSpan="4">Nenhuma cotação em aberto</td></tr>}
+                            {cotacoes.length === 0 && <tr><td colSpan="4">Nenhuma cotação em aberto</td></tr>}
                         </tbody>
                     </table>
                 </div>

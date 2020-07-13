@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 
 const CotacaoItens = ({ item }) => {
     const [preco, setPreco] = useState('0.00');
+
     useEffect(() => {
-        item.resultado.idvendedor !== "0" ? setPreco(item.resultado.precoCotado) : setPreco('0.00');
+        item.idvendedor !== "0" ? setPreco(item.precoCotado) : setPreco('0.00');
     }, [item]);
 
-    const handlePrecoChange = item => {
-        item.resultado.precoCotado = Number.parseFloat(preco.replace(',', '.')).toFixed(2);
+    const handleChange = preco => {
+        var formatter = new Intl.NumberFormat("pt-BR", { minimumFractionDigits:2});
+        setPreco(formatter.format(preco))
     }
 
     return (
-        <tr className={item.resultado.idvendedor !== "0" ? "table-success" : ""}>
-            <td>{item.produto.ean}</td>
-            <td>{item.produto.descricao}</td>
+        <tr className={item.idvendedor !== "0"  ? "table-success" : ""}>
+            <td>{item.ean}</td>
+            <td>{item.descricao}</td>
             <td>{item.unidade}</td>
             <td>{item.embalagem}</td>
             <td>{item.quantidade}</td>
@@ -22,10 +24,9 @@ const CotacaoItens = ({ item }) => {
                     type="text"
                     name="preco"
                     value={preco}
-                    onBlur={() => handlePrecoChange(item)}
-                    onChange={e => setPreco(e.target.value)}
+                    onChange={e => handleChange(e.target.value)}
                     placeholder="Preço"
-                    disabled={item.resultado.idvendedor !== "0"} />
+                    disabled={item.idvendedor !== "0"} />
             </td>
         </tr>
     );

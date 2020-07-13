@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 const userKey = "@aratu-Token";
 
 const authSlice = createSlice({
