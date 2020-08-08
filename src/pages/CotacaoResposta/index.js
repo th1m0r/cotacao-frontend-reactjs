@@ -56,10 +56,10 @@ const CotacaoResposta = () => {
                                 respostas.forEach(resposta => {
                                     cotacaoItens.forEach(itemResposta => {
                                         if (resposta.idproduto === itemResposta.idproduto) {
-                                            if (Number.parseFloat(itemResposta.precoCotado) > 0
-                                                && Number.parseFloat(itemResposta.idvendedor) === 0) {
+                                            if (Number.parseFloat(itemResposta.precoCotado.replace(",",".")) > 0
+                                                && Number.parseInt(itemResposta.idvendedor) === 0) {
                                                 resposta.idvendedor = user.id
-                                                resposta.precoCotado = itemResposta.precoCotado
+                                                resposta.precoCotado = itemResposta.precoCotado.replace(",",".")
                                             }
                                             resultado.push(resposta);
                                         }
@@ -75,7 +75,7 @@ const CotacaoResposta = () => {
                                                     resultado.push({
                                                         idcotacao: item.idcotacao,
                                                         idfornecedor: user.fornecedor.id,
-                                                        idvendedor: Number.parseFloat(resposta.precoCotado) > 0 ? user.id : 0,
+                                                        idvendedor: Number.parseFloat(resposta.precoCotado.replace(",", ".")) > 0 ? user.id : 0,
                                                         idproduto: resposta.idproduto,
                                                         precoCotado: resposta.precoCotado,
                                                         prazoPagamento: resposta.prazoPagamento,

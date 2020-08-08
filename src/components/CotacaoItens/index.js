@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 const CotacaoItens = ({ item }) => {
-    const [preco, setPreco] = useState('0.00');
+    const [preco, setPreco] = useState("0.00");
 
     useEffect(() => {
         item.idvendedor !== "0" ? setPreco(item.precoCotado) : setPreco('0.00');
     }, [item]);
 
     const handleChange = preco => {
-        var formatter = new Intl.NumberFormat("pt-BR", { minimumFractionDigits:2});
-        setPreco(formatter.format(preco))
+        setPreco(preco)
+        item.precoCotado = preco;
     }
 
     return (
@@ -25,7 +25,9 @@ const CotacaoItens = ({ item }) => {
                     name="preco"
                     value={preco}
                     onChange={e => handleChange(e.target.value)}
+                    onFocus={e => setPreco('')}
                     placeholder="Preço"
+                    autoComplete="off"
                     disabled={item.idvendedor !== "0"} />
             </td>
         </tr>
